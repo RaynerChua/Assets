@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    private bool isInHazardZone = false;
+    private float healthDrainTimer = 0f;
+    public float healthDrainInterval = 5f; // Time interval for health drain in seconds
     // Player's maximum health
     int maxHealth = 100;
     // Player's current health
     int currentHealth = 100;
     // Player's current score
-    int currentScore = 0;
+    public int currentScore = 0;
     // Flag to check if the player can interact with objects
     bool canInteract = false;
     // Stores the current coin object the player has detected
@@ -21,8 +24,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]    // The Interact callback for the Interact Input Action
     Transform spawnPoint;
+
     [SerializeField]
     public float firestrength = 0f;
+
 
     // The Interact callback for the Interact Input Action
     // This method is called when the player presses the interact button
@@ -65,18 +70,14 @@ public class PlayerBehaviour : MonoBehaviour
     // The method is public so it can be accessed from other scripts
     public void ModifyHealth(int amount)
     {
-        // Check if the current health is less than the maximum health
-        // If it is, increase the current health by the amount passed as an argument
-        if (currentHealth < maxHealth)
-        {
-            currentHealth += amount;
-            // Check if the current health exceeds the maximum health
-            // If it does, set the current health to the maximum health
-            if (currentHealth > maxHealth)
-            {
-                currentHealth = maxHealth;
-            }
-        }
+        currentHealth += amount;
+
+    if (currentHealth > maxHealth)
+        currentHealth = maxHealth;
+    
+    if (currentHealth < 0)
+        currentHealth = 0;
+        Debug.Log("Current Health: " + currentHealth);
     }
 
     // Collision Callback for when the player collides with another object
@@ -117,6 +118,12 @@ public class PlayerBehaviour : MonoBehaviour
             canInteract = true;
             currentDoor = other.GetComponent<DoorBehaviour>();
         }
+        else if (other.CompareTag("HazardZone"))
+        {
+            isInHazardZone = true;
+            healthDrainTimer = 0f; // Reset the health drain timer
+            Debug.Log("Entered Hazard Zone");
+        }
     }
 
     // Trigger Callback for when the player exits a trigger collider
@@ -139,6 +146,25 @@ public class PlayerBehaviour : MonoBehaviour
                 canInteract = false;
                 currentDoor = null; // Set the current door to null
             }
+            if (other.CompareTag("HazaardZone"))
+            {
+                isInHazardZone = false;
+            }
         }
+    }
+    
+    void Update()
+    {
+        if (isInHazardZone)
+    {
+        healthDrainTimer += Time.deltaTime;
+
+        if (healthDrainTimer >= healthDrainInterval)
+        {
+            healthDrainTimer = 0f;
+            ModifyHealth(-1);
+            Debug.Log("Hazard damage. Current health: " + currentHealth);
+        }
+    }
     }
 }
