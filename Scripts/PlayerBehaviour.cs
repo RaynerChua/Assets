@@ -1,11 +1,10 @@
 using System;
 using UnityEngine;
 
+
 public class PlayerBehaviour : MonoBehaviour
 {
-    private bool isInHazardZone = false;
-    private float healthDrainTimer = 0f;
-    public float healthDrainInterval = 5f; // Time interval for health drain in seconds
+  
     // Player's maximum health
     int maxHealth = 100;
     // Player's current health
@@ -16,8 +15,8 @@ public class PlayerBehaviour : MonoBehaviour
     bool canInteract = false;
     // Stores the current coin object the player has detected
     CoinBehaviour currentCoin = null;
-
     DoorBehaviour currentDoor = null;
+    // Reference to the UI Text component for displaying coins collected
 
     [SerializeField]
     GameObject projectile;
@@ -70,18 +69,21 @@ public class PlayerBehaviour : MonoBehaviour
     // The method is public so it can be accessed from other scripts
     public void ModifyHealth(int amount)
     {
+        int previousHealth = currentHealth;
         currentHealth += amount;
 
-    if (currentHealth > maxHealth)
-        currentHealth = maxHealth;
-    
-    if (currentHealth < 0)
-        currentHealth = 0;
-        Debug.Log("Current Health: " + currentHealth);
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+        if (currentHealth < 0)
+            currentHealth = 0;
+
+        int recoveredAmount = currentHealth - previousHealth;
+        Debug.Log("Recovered: " + recoveredAmount + " HP | Current Health: " + currentHealth);
     }
 
     // Collision Callback for when the player collides with another object
-    void OnCollisionStay(Collision collision)
+    public void OnCollisionStay(Collision collision)
     {
         // Check if the player collides with an object tagged as "HealingArea"
         // If it does, call the RecoverHealth method on the object
@@ -118,55 +120,26 @@ public class PlayerBehaviour : MonoBehaviour
             canInteract = true;
             currentDoor = other.GetComponent<DoorBehaviour>();
         }
-        else if (other.CompareTag("HazardZone"))
-        {
-            isInHazardZone = true;
-            healthDrainTimer = 0f; // Reset the health drain timer
-            Debug.Log("Entered Hazard Zone");
-        }
+    
     }
 
     // Trigger Callback for when the player exits a trigger collider
     void OnTriggerExit(Collider other)
     {
-        // Check if the player has a detected coin or door
-        if (currentCoin != null)
+        if (other.CompareTag("Collectible")&& currentCoin != null && other.gameObject == currentCoin.gameObject)
         {
-            // If the object that exited the trigger is the same as the current coin
-            if (other.gameObject == currentCoin.gameObject)
-            {
-                // Set the canInteract flag to false
-                // Set the current coin to null
-                // This prevents the player from interacting with the coin
-                canInteract = false;
-                currentCoin = null;
-            }
-            if (currentDoor != null && other.gameObject == currentDoor.gameObject)
-            {
-                canInteract = false;
-                currentDoor = null; // Set the current door to null
-            }
-            if (other.CompareTag("HazardZone"))
-            {
-                isInHazardZone = false;
-            }
+            // Set the canInteract flag to false
+            // Clear the currentCoin reference
+            canInteract = false;
+            currentCoin = null;
+        }
+        if (other.CompareTag("Door") && currentDoor != null && other.gameObject == currentDoor.gameObject)
+        {
+            // Set the canInteract flag to false
+            // Clear the currentDoor reference
+            canInteract = false;
+            currentDoor = null;
         }
     }
-    
-    void Update()
-    {
-        Debug.Log("Hazard damage. Current health: " + currentHealth);
 
-        if (isInHazardZone)
-        {
-            healthDrainTimer += Time.deltaTime;
-
-            if (healthDrainTimer >= healthDrainInterval)
-            {
-                healthDrainTimer = 0f;
-                ModifyHealth(-1);
-                Debug.Log("Hazard damage. Current health: " + currentHealth);
-            }
-        }
-    }
 }
