@@ -22,7 +22,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]    // The Interact callback for the Interact Input Action
     Transform spawnPoint;
     [SerializeField]
-    float firestrength = 0f;
+    public float firestrength = 0f;
 
     // The Interact callback for the Interact Input Action
     // This method is called when the player presses the interact button
