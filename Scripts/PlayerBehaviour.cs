@@ -146,7 +146,7 @@ public class PlayerBehaviour : MonoBehaviour
                 canInteract = false;
                 currentDoor = null; // Set the current door to null
             }
-            if (other.CompareTag("HazaardZone"))
+            if (other.CompareTag("HazardZone"))
             {
                 isInHazardZone = false;
             }
@@ -155,16 +155,18 @@ public class PlayerBehaviour : MonoBehaviour
     
     void Update()
     {
-        if (isInHazardZone)
-    {
-        healthDrainTimer += Time.deltaTime;
+        Debug.Log("Hazard damage. Current health: " + currentHealth);
 
-        if (healthDrainTimer >= healthDrainInterval)
+        if (isInHazardZone)
         {
-            healthDrainTimer = 0f;
-            ModifyHealth(-1);
-            Debug.Log("Hazard damage. Current health: " + currentHealth);
+            healthDrainTimer += Time.deltaTime;
+
+            if (healthDrainTimer >= healthDrainInterval)
+            {
+                healthDrainTimer = 0f;
+                ModifyHealth(-1);
+                Debug.Log("Hazard damage. Current health: " + currentHealth);
+            }
         }
-    }
     }
 }
