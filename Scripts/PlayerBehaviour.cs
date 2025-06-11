@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
-
+using TMPro;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-  
+
     // Player's maximum health
-    int maxHealth = 100;
+    public int maxHealth = 100;
     // Player's current health
-    int currentHealth = 100;
+    public int currentHealth = 100;
     // Player's current score
     public int currentScore = 0;
     // Flag to check if the player can interact with objects
@@ -16,17 +16,23 @@ public class PlayerBehaviour : MonoBehaviour
     // Stores the current coin object the player has detected
     CoinBehaviour currentCoin = null;
     DoorBehaviour currentDoor = null;
-    // Reference to the UI Text component for displaying coins collected
 
     [SerializeField]
     GameObject projectile;
 
-    [SerializeField]    // The Interact callback for the Interact Input Action
-    Transform spawnPoint;
+    [SerializeField]
+    public Transform spawnPoint;
 
     [SerializeField]
     public float firestrength = 0f;
 
+    [SerializeField]
+    TextMeshProUGUI scoreText;
+
+    void Start()
+    {
+        scoreText.text = "SCORE:" + currentScore.ToString();
+    }
 
     // The Interact callback for the Interact Input Action
     // This method is called when the player presses the interact button
@@ -61,6 +67,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         // Increase currentScore by the amount passed as an argument
         currentScore += amt;
+         scoreText.text = "SCORE:" + currentScore.ToString();
     }
 
     // Method to modify the player's health
@@ -75,8 +82,18 @@ public class PlayerBehaviour : MonoBehaviour
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 
-        if (currentHealth < 0)
+        if (currentHealth <= 0)
+        {
             currentHealth = 0;
+            Debug.Log("Player is dead!");
+            // Optionally, you can call a method to handle player death
+            // For example, respawn the player or end the game
+            Respawn();
+        }
+        else if (currentHealth < previousHealth)
+        {
+            Debug.Log("Damage taken: " + (previousHealth - currentHealth) + " HP | Current Health: " + currentHealth);
+        }
 
         int recoveredAmount = currentHealth - previousHealth;
         Debug.Log("Recovered: " + recoveredAmount + " HP | Current Health: " + currentHealth);
@@ -120,13 +137,13 @@ public class PlayerBehaviour : MonoBehaviour
             canInteract = true;
             currentDoor = other.GetComponent<DoorBehaviour>();
         }
-    
+
     }
 
     // Trigger Callback for when the player exits a trigger collider
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Collectible")&& currentCoin != null && other.gameObject == currentCoin.gameObject)
+        if (other.CompareTag("Collectible") && currentCoin != null && other.gameObject == currentCoin.gameObject)
         {
             // Set the canInteract flag to false
             // Clear the currentCoin reference
@@ -140,6 +157,28 @@ public class PlayerBehaviour : MonoBehaviour
             canInteract = false;
             currentDoor = null;
         }
+    }
+
+    public void Respawn()
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.Sleep(); // Reset motion safely
+        }
+
+        if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.position;
+        }
+        else
+        {
+            Debug.LogWarning("Spawn point not assigned!");
+        }
+
+        currentHealth = maxHealth; 
+
     }
 
 }
