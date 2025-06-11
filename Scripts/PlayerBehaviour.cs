@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -29,9 +31,15 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI scoreText;
 
+    [SerializeField]
+    TextMeshProUGUI healthText;
+
+
     void Start()
     {
         scoreText.text = "SCORE:" + currentScore.ToString();
+        healthText.text = "HEALTH: " + currentHealth.ToString();
+
     }
 
     // The Interact callback for the Interact Input Action
@@ -76,27 +84,17 @@ public class PlayerBehaviour : MonoBehaviour
     // The method is public so it can be accessed from other scripts
     public void ModifyHealth(int amount)
     {
-        int previousHealth = currentHealth;
-        currentHealth += amount;
-
-        if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
-
-        if (currentHealth <= 0)
+        if (currentHealth < maxHealth)
         {
-            currentHealth = 0;
-            Debug.Log("Player is dead!");
-            // Optionally, you can call a method to handle player death
-            // For example, respawn the player or end the game
-            Respawn();
-        }
-        else if (currentHealth < previousHealth)
-        {
-            Debug.Log("Damage taken: " + (previousHealth - currentHealth) + " HP | Current Health: " + currentHealth);
-        }
+            currentHealth += amount;
 
-        int recoveredAmount = currentHealth - previousHealth;
-        Debug.Log("Recovered: " + recoveredAmount + " HP | Current Health: " + currentHealth);
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth; // Ensure health does not exceed maxHealth
+            }
+            
+            healthText.text = "HEALTH: " + currentHealth.ToString();
+        }
     }
 
     // Collision Callback for when the player collides with another object
