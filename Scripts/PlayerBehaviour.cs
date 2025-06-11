@@ -6,7 +6,6 @@ using Microsoft.Unity.VisualStudio.Editor;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-
     // Player's maximum health
     public int maxHealth = 100;
     // Player's current health
@@ -20,20 +19,13 @@ public class PlayerBehaviour : MonoBehaviour
     DoorBehaviour currentDoor = null;
 
     [SerializeField]
-    GameObject projectile;
-
-    [SerializeField]
     public Transform spawnPoint;
-
-    [SerializeField]
-    public float firestrength = 0f;
 
     [SerializeField]
     TextMeshProUGUI scoreText;
 
     [SerializeField]
     TextMeshProUGUI healthText;
-
 
     void Start()
     {
@@ -84,18 +76,20 @@ public class PlayerBehaviour : MonoBehaviour
     // The method is public so it can be accessed from other scripts
     public void ModifyHealth(int amount)
     {
-        if (currentHealth < maxHealth)
-        {
-            currentHealth += amount;
+    currentHealth += amount;
 
-            if (currentHealth > maxHealth)
-            {
-                currentHealth = maxHealth; // Ensure health does not exceed maxHealth
-            }
-            
-            healthText.text = "HEALTH: " + currentHealth.ToString();
-        }
+    if (currentHealth > maxHealth)
+        currentHealth = maxHealth;
+
+    if (currentHealth <= 0)
+    {
+        currentHealth = 0;
+        Debug.Log("Player is dead!");
+        Respawn();
     }
+
+    healthText.text = "HEALTH: " + currentHealth.ToString();
+  }
 
     // Collision Callback for when the player collides with another object
     public void OnCollisionStay(Collision collision)
@@ -108,12 +102,6 @@ public class PlayerBehaviour : MonoBehaviour
         {
             collision.gameObject.GetComponent<RecoveryBehaviour>().RecoverHealth(this);
         }
-    }
-    public void OnFire()
-    {
-        GameObject newProjectile = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
-        Vector3 fireForce = spawnPoint.forward * firestrength;
-        newProjectile.GetComponent<Rigidbody>().AddForce(fireForce);
     }
 
     // Trigger Callback for when the player enters a trigger collider
@@ -134,6 +122,12 @@ public class PlayerBehaviour : MonoBehaviour
             // Get the DoorBehaviour component from the detected object
             canInteract = true;
             currentDoor = other.GetComponent<DoorBehaviour>();
+        }
+        if (other.CompareTag("HealingArea"))
+        {
+            // Call the RecoverHealth method on the HealingArea object
+            // Pass the player object as an argument
+            other.GetComponent<RecoveryBehaviour>().RecoverHealth(this);
         }
 
     }
