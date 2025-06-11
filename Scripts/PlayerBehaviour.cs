@@ -153,24 +153,32 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Respawn()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+    Rigidbody rb = GetComponent<Rigidbody>();
+
+    if (spawnPoint != null)
+    {
+        transform.position = spawnPoint.position;
+        Debug.Log("Teleporting to: " + spawnPoint.position);
 
         if (rb != null)
         {
-            rb.Sleep(); // Reset motion safely
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.Sleep(); // Pause physics motion to prevent jitter
         }
 
-        if (spawnPoint != null)
-        {
-            transform.position = spawnPoint.position;
-        }
-        else
-        {
-            Debug.LogWarning("Spawn point not assigned!");
-        }
-
-        currentHealth = maxHealth; 
-
+        // Optionally force Unity to immediately recognize the position change
+        Physics.SyncTransforms();
     }
+    else
+    {
+        Debug.LogWarning("Spawn point not assigned!");
+    }
+
+    currentHealth = maxHealth;
+    healthText.text = "HEALTH: " + currentHealth.ToString();
+    Debug.Log("Player respawned and health reset.");
+    }
+
 
 }
