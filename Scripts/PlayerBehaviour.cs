@@ -168,7 +168,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     IEnumerator HideCongratsMsg()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(10f);
         if (congratsTextUI != null)
         {
             congratsTextUI.SetActive(false);
