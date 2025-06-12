@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Microsoft.Unity.VisualStudio.Editor;
+using System.Collections;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI healthText;
+
+    [SerializeField]
+
+    GameObject deathMsgUI;
 
     void Start()
     {
@@ -81,15 +86,30 @@ public class PlayerBehaviour : MonoBehaviour
     if (currentHealth > maxHealth)
         currentHealth = maxHealth;
 
-    if (currentHealth <= 0)
-    {
-        currentHealth = 0;
-        Debug.Log("Player is dead!");
-        Respawn();
-    }
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            Debug.Log("Player is dead!");
+
+            if (deathMsgUI != null)
+            // If the death message UI is assigned, activate it
+                deathMsgUI.SetActive(true);
+
+            StartCoroutine(HideDeathMsg());
+
+            Respawn();
+       }
 
     healthText.text = "HEALTH: " + currentHealth.ToString();
-  }
+    }
+
+    IEnumerator HideDeathMsg() {
+        yield return new WaitForSeconds(2f);
+        if (deathMsgUI != null)
+        {
+            deathMsgUI.SetActive(false);
+        }
+    }
 
     // Collision Callback for when the player collides with another object
     public void OnCollisionStay(Collision collision)
