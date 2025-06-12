@@ -32,6 +32,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     GameObject deathMsgUI;
 
+    [SerializeField]
+
+    GameObject congratsTextUI;
+
     void Start()
     {
         scoreText.text = "SCORE:" + currentScore.ToString();
@@ -149,7 +153,26 @@ public class PlayerBehaviour : MonoBehaviour
             // Pass the player object as an argument
             other.GetComponent<RecoveryBehaviour>().RecoverHealth(this);
         }
+        else if (other.CompareTag("VictoryToken"))
+        {
+            if (congratsTextUI != null)
+            {
+                // If the victory token is detected, activate the congrats text UI
+                congratsTextUI.SetActive(true);
+                StartCoroutine(HideCongratsMsg());
+            }
+            other.GetComponent<VictoryBehaviour>().Collect(this);
+            Debug.Log("Congratulations! You have completed the game!");
+        }
+    }
 
+    IEnumerator HideCongratsMsg()
+    {
+        yield return new WaitForSeconds(2f);
+        if (congratsTextUI != null)
+        {
+            congratsTextUI.SetActive(false);
+        }
     }
 
     // Trigger Callback for when the player exits a trigger collider
