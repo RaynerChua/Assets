@@ -161,14 +161,14 @@ public class PlayerBehaviour : MonoBehaviour
                 congratsTextUI.SetActive(true);
                 StartCoroutine(HideCongratsMsg());
             }
-            other.GetComponent<VictoryBehaviour>().Collect(this);
+            other.GetComponent<VictoryBehaviour>()?.Collect(this);
             Debug.Log("Congratulations! You have completed the game!");
         }
     }
 
     IEnumerator HideCongratsMsg()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(6f);
         if (congratsTextUI != null)
         {
             congratsTextUI.SetActive(false);

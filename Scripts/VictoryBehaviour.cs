@@ -7,6 +7,7 @@ public class VictoryBehaviour : MonoBehaviour
     public void Collect(PlayerBehaviour player)
     {
         player.ModifyScore(tokenValue);
+        Debug.Log("Victory token collected!");
         Destroy(gameObject); // Destroy the victory token object
     }
 }
