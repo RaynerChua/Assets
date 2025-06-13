@@ -164,6 +164,10 @@ public class PlayerBehaviour : MonoBehaviour
             other.GetComponent<VictoryBehaviour>()?.Collect(this);
             Debug.Log("Congratulations! You have completed the game!");
         }
+        else if (other.CompareTag("RevealToken"))
+        {
+            other.GetComponent<RevealPathToken>().Collect();
+        }
     }
 
     IEnumerator HideCongratsMsg()
