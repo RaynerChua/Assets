@@ -1,35 +1,24 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class RevealPathToken : MonoBehaviour
 {
-    [SerializeField] GameObject hiddenPath;
-    [SerializeField] TextMeshProUGUI revealMsgText;
+    [SerializeField] private GameObject hiddenPath;
+    [SerializeField] private TextMeshProUGUI revealMsgText;
 
     public void Collect()
     {
         if (hiddenPath != null)
         {
-            hiddenPath.SetActive(true); // Reveal the path
+            hiddenPath.SetActive(true);
             Debug.Log("Hidden path revealed!");
         }
-        if (revealMsgText != null)
+
+        if (revealMsgText != null && MessageDisplayManager.Instance != null)
         {
-            revealMsgText.gameObject.SetActive(true); // Show the message UI
-            StartCoroutine(HideMsg());
+            MessageDisplayManager.Instance.ShowMessage(revealMsgText, 3f);
         }
 
-    }
-
-    public IEnumerator HideMsg()
-    {
-        yield return new WaitForSeconds(3f); // Wait for 5 seconds
-        if (revealMsgText != null)
-        {
-            revealMsgText.gameObject.SetActive(false); // Hide the message UI
-        }
-        Debug.Log("Message hidden after 2 seconds.");
-        Destroy(gameObject); // Remove the token after use
+        Destroy(gameObject); // Destroy token immediately
     }
 }
