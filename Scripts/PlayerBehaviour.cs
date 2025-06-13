@@ -19,6 +19,7 @@ public class PlayerBehaviour : MonoBehaviour
     CoinBehaviour currentCoin = null;
     DoorBehaviour currentDoor = null;
 
+
     [SerializeField]
     public Transform spawnPoint;
 
@@ -35,6 +36,16 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
 
     GameObject congratsTextUI;
+
+    [SerializeField]
+
+    private TextMeshProUGUI coinCountText;
+
+    [SerializeField]
+
+    private int totalCoins = 10;
+
+    private int collectedCoins = 0;
 
     void Start()
     {
@@ -76,7 +87,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         // Increase currentScore by the amount passed as an argument
         currentScore += amt;
-         scoreText.text = "SCORE:" + currentScore.ToString();
+        scoreText.text = "SCORE:" + currentScore.ToString();
     }
 
     // Method to modify the player's health
@@ -85,10 +96,10 @@ public class PlayerBehaviour : MonoBehaviour
     // The method is public so it can be accessed from other scripts
     public void ModifyHealth(int amount)
     {
-    currentHealth += amount;
+        currentHealth += amount;
 
-    if (currentHealth > maxHealth)
-        currentHealth = maxHealth;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
 
         if (currentHealth <= 0)
         {
@@ -96,18 +107,19 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log("Player is dead!");
 
             if (deathMsgUI != null)
-            // If the death message UI is assigned, activate it
+                // If the death message UI is assigned, activate it
                 deathMsgUI.SetActive(true);
 
             StartCoroutine(HideDeathMsg());
 
             Respawn();
-       }
+        }
 
-    healthText.text = "HEALTH: " + currentHealth.ToString();
+        healthText.text = "HEALTH: " + currentHealth.ToString();
     }
 
-    IEnumerator HideDeathMsg() {
+    IEnumerator HideDeathMsg()
+    {
         yield return new WaitForSeconds(2f);
         if (deathMsgUI != null)
         {
@@ -200,31 +212,37 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Respawn()
     {
-    Rigidbody rb = GetComponent<Rigidbody>();
+        Rigidbody rb = GetComponent<Rigidbody>();
 
-    if (spawnPoint != null)
-    {
-        transform.position = spawnPoint.position;
-        Debug.Log("Teleporting to: " + spawnPoint.position);
-
-        if (rb != null)
+        if (spawnPoint != null)
         {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.Sleep(); // Pause physics motion to prevent jitter
+            transform.position = spawnPoint.position;
+            Debug.Log("Teleporting to: " + spawnPoint.position);
+
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.Sleep(); // Pause physics motion to prevent jitter
+            }
+
+            // Optionally force Unity to immediately recognize the position change
+            Physics.SyncTransforms();
+        }
+        else
+        {
+            Debug.LogWarning("Spawn point not assigned!");
         }
 
-        // Optionally force Unity to immediately recognize the position change
-        Physics.SyncTransforms();
-    }
-    else
-    {
-        Debug.LogWarning("Spawn point not assigned!");
+        currentHealth = maxHealth;
+        healthText.text = "HEALTH: " + currentHealth.ToString();
+        Debug.Log("Player respawned and health reset.");
     }
 
-    currentHealth = maxHealth;
-    healthText.text = "HEALTH: " + currentHealth.ToString();
-    Debug.Log("Player respawned and health reset.");
+    public void IncrementCoinCount()
+    {
+        collectedCoins++;
+        coinCountText.text = $"Coins: {collectedCoins}/{totalCoins}";
     }
 
 

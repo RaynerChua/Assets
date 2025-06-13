@@ -21,6 +21,7 @@ public class CoinBehaviour : MonoBehaviour
         // The coinValue is passed as an argument to the method
         // This allows the player to gain points when they collect the coin
         player.ModifyScore(coinValue);
+        player.IncrementCoinCount(); // Increment the player's coin count
 
         Destroy(gameObject); // Destroy the coin object
     }
