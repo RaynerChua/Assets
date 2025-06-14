@@ -10,12 +10,14 @@ using UnityEngine;
 
 public class VictoryBehaviour : MonoBehaviour
 {
-    [SerializeField] int tokenValue = 1000;
+    [SerializeField] int tokenValue = 1000; // Defines the score value (1k) awarded upon collecting the token
 
-    public void Collect(PlayerBehaviour player)
+    public void Collect(PlayerBehaviour player) // Method called when the player collects the victory token
     {
-        player.ModifyScore(tokenValue);
-        Debug.Log("Victory token collected!");
-        Destroy(gameObject); // Destroy the victory token object
+        {
+            player.ModifyScore(tokenValue); // Increases the player's score by the token's value
+            Debug.Log("Victory token collected!"); // Logs confirmation of the collection event
+            Destroy(gameObject); // Destroy the victory token object from scene
+        }
     }
 }
