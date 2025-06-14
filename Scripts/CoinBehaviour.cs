@@ -1,3 +1,11 @@
+
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script is to facilitate the collection of coins in the game.
+*/ 
+
+
 using UnityEngine;
 
 public class CoinBehaviour : MonoBehaviour

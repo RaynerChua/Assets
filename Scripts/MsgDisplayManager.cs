@@ -1,3 +1,9 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script is meant to call a message from the UI when a specific gameObject is destroyed, its linked to the hiddenPath script.
+*/
+
 using System.Collections;
 using TMPro;
 using UnityEngine;

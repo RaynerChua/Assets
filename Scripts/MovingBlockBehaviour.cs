@@ -1,3 +1,9 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script is to facilitate the vertical movement of blocks in the game using Mathf.PingPong to create an up & down motion.
+*/
+
 using UnityEngine;
 
 public class MovingBlockBehaviour : MonoBehaviour

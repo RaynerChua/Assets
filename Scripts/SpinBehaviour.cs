@@ -1,3 +1,9 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: A simple script to make any GameObject spin continuously.
+*/
+
 using UnityEngine;
 
 public class SpinBehaviour : MonoBehaviour

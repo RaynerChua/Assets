@@ -1,3 +1,9 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: A simple script to reveal a hidden path when a special token is collected.
+*/
+
 using TMPro;
 using UnityEngine;
 

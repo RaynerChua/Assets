@@ -1,3 +1,9 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: A simple script to handle teleportation of the player when they enter a trigger zone.
+*/
+
 using UnityEngine;
 
 public class TeleportBehaviour : MonoBehaviour

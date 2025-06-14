@@ -1,3 +1,12 @@
+
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script covers a majority of actions the player can do in the game, most of player UI controls are handled here, 
+allows interaction with gameObjects by pressing E, health & score modification can be done here as well, collision triggers onEnter/exit,
+collectible counter is handled here as well, respawning the player when they die, and displaying the death message UI.
+*/
+
 using System;
 using UnityEngine;
 using TMPro;

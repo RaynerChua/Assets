@@ -1,3 +1,10 @@
+
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script is to facilitate the damage over time effect for the toxic hazard gameObject.
+*/
+
 using UnityEngine;
 using System.Collections;
 

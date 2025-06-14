@@ -1,3 +1,11 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script handles the vanishing & reappearing behaviour of gameObjects, 
+objects in vanish have their collider turned off, when visible, the collider is turned on.
+* The object will be visible for a set duration, then invisible for another set duration, and this cycle repeats.
+*/
+
 using UnityEngine;
 
 public class VanishBehaviour : MonoBehaviour

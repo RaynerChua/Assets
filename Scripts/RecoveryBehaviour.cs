@@ -1,10 +1,16 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: A simple script to handle the recovery behaviour for the healing zone.
+*/
+
 using UnityEngine;
 
 public class RecoveryBehaviour : MonoBehaviour
 {
     // Amount of health to recover
     [SerializeField]
-    int healAmount = 5;
+    int healAmount = 100;
 
     // Method to recover health
     // This method will be called when the player interacts with the recovery object

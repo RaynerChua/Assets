@@ -1,3 +1,11 @@
+
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: A simple script to handle victory token collection and score increment.
+* When the player collects a victory token, their score is increased by a specified value.
+*/
+
 using UnityEngine;
 
 public class VictoryBehaviour : MonoBehaviour

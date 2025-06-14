@@ -1,3 +1,9 @@
+/* 
+* Author: Chua Yi Xuan Rayner
+* Date: 9/6/25 - 14/6/25
+* Description: This script is to facilitate the opening & losing of the doors in the game as well as playing the door opening sound effect.
+*/
+
 using UnityEngine;
 using UnityEngine.Rendering;
 
