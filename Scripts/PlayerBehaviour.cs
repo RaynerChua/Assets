@@ -9,55 +9,61 @@ collectible counter is handled here as well, respawning the player when they die
 
 using System;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using Microsoft.Unity.VisualStudio.Editor;
-using System.Collections;
+using TMPro; // For working with TextMeshProUGUI components
+using UnityEngine.UI; // Enables usage of Unity UI components (e.g., GameObject, Button)
+using Microsoft.Unity.VisualStudio.Editor; 
+using System.Collections; // Required to run Coroutines (like IEnumerator and WaitForSeconds)
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    // Player's maximum health
+    // Max health cap for the player
     public int maxHealth = 100;
-    // Player's current health
+    // Current health status
     public int currentHealth = 100;
-    // Player's current score
+    // Player's current score value
     public int currentScore = 0;
+
     // Flag to check if the player can interact with objects
     bool canInteract = false;
-    // Stores the current coin object the player has detected
+
+    // references to the current coin and door the player is interacting with
     CoinBehaviour currentCoin = null;
     DoorBehaviour currentDoor = null;
 
 
     [SerializeField]
+    // Point where the player respawns on death
     public Transform spawnPoint;
 
     [SerializeField]
+    // UI element that displays the player's score
     TextMeshProUGUI scoreText;
 
     [SerializeField]
+    // UI element that displays the player's health
     TextMeshProUGUI healthText;
 
     [SerializeField]
-
+    // UI GameObject to show when the player dies
     GameObject deathMsgUI;
 
     [SerializeField]
-
+    // UI GameObject shown when the player wins
     GameObject congratsTextUI;
 
     [SerializeField]
-
+    // UI text for the coin counter
     private TextMeshProUGUI coinCountText;
 
     [SerializeField]
-
+    // Total coins required to win or finish the level
     private int totalCoins = 10;
-
+    // Number of coins the player has collected so far
     private int collectedCoins = 0;
 
     void Start()
     {
+        // Initialize score and health UI with the player's starting values
         scoreText.text = "SCORE:" + currentScore.ToString();
         healthText.text = "HEALTH: " + currentHealth.ToString();
 
@@ -108,7 +114,7 @@ public class PlayerBehaviour : MonoBehaviour
         currentHealth += amount;
 
         if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
+            currentHealth = maxHealth; // Cap health at max
 
         if (currentHealth <= 0)
         {
@@ -119,20 +125,20 @@ public class PlayerBehaviour : MonoBehaviour
                 // If the death message UI is assigned, activate it
                 deathMsgUI.SetActive(true);
 
-            StartCoroutine(HideDeathMsg());
+            StartCoroutine(HideDeathMsg()); // Begin timer to hide death message
 
-            Respawn();
+            Respawn(); // Reset player's position and health
         }
 
-        healthText.text = "HEALTH: " + currentHealth.ToString();
+        healthText.text = "HEALTH: " + currentHealth.ToString(); // Update health UI
     }
 
     IEnumerator HideDeathMsg()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f); // Wait 2 seconds
         if (deathMsgUI != null)
         {
-            deathMsgUI.SetActive(false);
+            deathMsgUI.SetActive(false); // Hide death message
         }
     }
 
@@ -182,21 +188,21 @@ public class PlayerBehaviour : MonoBehaviour
                 congratsTextUI.SetActive(true);
                 StartCoroutine(HideCongratsMsg());
             }
-            other.GetComponent<VictoryBehaviour>()?.Collect(this);
+            other.GetComponent<VictoryBehaviour>().Collect(this); // Call token collection logic
             Debug.Log("Congratulations! You have completed the game!");
         }
         else if (other.CompareTag("RevealToken"))
         {
-            other.GetComponent<RevealPathToken>().Collect();
+            other.GetComponent<RevealPathToken>().Collect(); // Reveal hidden path or feature
         }
     }
 
     IEnumerator HideCongratsMsg()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(10f); // Show victory message for 10 seconds
         if (congratsTextUI != null)
         {
-            congratsTextUI.SetActive(false);
+            congratsTextUI.SetActive(false); // Then hide it
         }
     }
 
@@ -221,21 +227,21 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Respawn()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+        Rigidbody rb = GetComponent<Rigidbody>(); // Access Rigidbody for velocity resets
 
         if (spawnPoint != null)
         {
-            transform.position = spawnPoint.position;
+            transform.position = spawnPoint.position; // Teleport player to spawn location
             Debug.Log("Teleporting to: " + spawnPoint.position);
 
             if (rb != null)
             {
-                rb.linearVelocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-                rb.Sleep(); // Pause physics motion to prevent jitter
+                rb.linearVelocity = Vector3.zero; // Stop current motion
+                rb.angularVelocity = Vector3.zero; // Stop rotation
+                rb.Sleep(); // Pause & stabilize physics motion to prevent jitter
             }
 
-            // Optionally force Unity to immediately recognize the position change
+            // Ensure physics reflects the new position
             Physics.SyncTransforms();
         }
         else
@@ -243,15 +249,15 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.LogWarning("Spawn point not assigned!");
         }
 
-        currentHealth = maxHealth;
-        healthText.text = "HEALTH: " + currentHealth.ToString();
+        currentHealth = maxHealth; // Reset health to max on respawn
+        healthText.text = "HEALTH: " + currentHealth.ToString(); // Update health UI
         Debug.Log("Player respawned and health reset.");
     }
 
     public void IncrementCoinCount()
     {
-        collectedCoins++;
-        coinCountText.text = $"Coins: {collectedCoins}/{totalCoins}";
+        collectedCoins++; // Count collected coin
+        coinCountText.text = $"Coins: {collectedCoins}/{totalCoins}"; // Update UI
     }
 
 
