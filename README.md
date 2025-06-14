@@ -64,6 +64,7 @@ Each coin collected contributes 50 points to the player's total score. The max s
 - Special tokens have no manual interaction ("No E") but can be interacted via player Object collision
 - Player will fall off moving blocks if not careful, if a block moves the player will not stay on it and will slide off.
 - There are no checkpoints. Some stages will require players to start from scratch if they go off course.
+- Some blocks might be slow and could result in longer playtime.
 
 ## Credits & references
 - Door opening sound: https://pixabay.com/sound-effects/search/door%20open/ ("Door Open" by freesound_community):
