@@ -11,7 +11,7 @@
 - Windows PC
   
 ## Premise
-Player was kidnap ped by a demon lord, they wake up in his lair. The path to the outside is hidden and they must find a special key to reveal it. The money they had on 
+Player was kidnapped by a demon lord, they wake up in his lair. The path to the outside is hidden and they must find a special key to reveal it. The money they had on 
 their person was stolen and scattered around the map. They must retrieve their stolen coins and successfully reach the helicopter pad to escape. 
 
 
