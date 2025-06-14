@@ -1,4 +1,3 @@
-# Assets
-I3E Assignment 1 C# Codes
+# I3E ASG1
 
-Game features:
+## Controls
