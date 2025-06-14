@@ -2,7 +2,7 @@
 
 ## Controls
 - W-A-S-D (Move player forward, left, right & backward)
-- SpaceBar (Allows plkayer to jump up)
+- SpaceBar (Allows player to jump up)
 - Shift (Allows player to Sprint)
 - "E" (Allows player to interact with gameObjects like collecting coins & opening doors)
 - Recommended: W + Spacebar + Shift (Player can "fly"/ move a great distance when jumping across platforms)
