@@ -1,10 +1,28 @@
 # I3E ASG1
 
 ## Controls
+- W-A-S-D (Move player forward, left, right & backward)
+- SpaceBar (Allows plkayer to jump up)
+- Shift (Allows player to Sprint)
+- "E" (Allows player to interact with gameObjects like collecting coins & opening doors)
+- Recommended: W + Spacebar + Shift (Player can "fly"/ move a great distance when jumping across platforms)
+  
 ## Platforms
+- Windows PC
+  
 ## Premise
+
+
 ## Game Outline
+
+
 ## Bugs & Limitations
+- Player must go to the corner of the door to interact with it (open door), no corner = no interaction
+- There is no audio/visual feedback for the coins. (Only change can be seen via coin counter)
+- There is no audio feedback for player death.
+- No "E" interaction UI
+- Special tokens have no manual interaction ("No E") but can be interacted via player Object collision
+
 ## Credits & references
 - Door opening sound: https://pixabay.com/sound-effects/search/door%20open/ ("Door Open" by freesound_community):
   Edited with ClipChamp (https://clipchamp.com/en/) & converted into mp3 with FreeConvert (https://www.freeconvert.com/mp4-to-mp3)
