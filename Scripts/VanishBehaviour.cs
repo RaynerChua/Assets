@@ -6,45 +6,47 @@ objects in vanish have their collider turned off, when visible, the collider is 
 * The object will be visible for a set duration, then invisible for another set duration, and this cycle repeats.
 */
 
-using UnityEngine;
+using UnityEngine; 
 
 public class VanishBehaviour : MonoBehaviour
 {
-    public float visibleDuration = 2f;    // Time the block is visible
-    public float invisibleDuration = 2f;  // Time the block is invisible
+    public float visibleDuration = 2f;    // Time the block is visible (seconds)
+    public float invisibleDuration = 2f;  // Time the block is invisible (seconds)
 
-    private Renderer blockRenderer;
-    private Collider blockCollider;
-    private float timer;
-    private bool isVisible = true;
+    private Renderer blockRenderer; // Reference to the object's Renderer component (controls visibility)
+    private Collider blockCollider; // Reference to the object's Collider (controls interaction)
+    private float timer; // Tracks countdown until visibility toggles
+    private bool isVisible = true; // Tracks whether the object is currently visible or not
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        blockRenderer = GetComponent<Renderer>();
-        blockCollider = GetComponent<Collider>();
-        timer = visibleDuration;
+        blockRenderer = GetComponent<Renderer>(); // Retrieve the object's Renderer component
+        blockCollider = GetComponent<Collider>(); // Retrieve the object's Collider component
+        timer = visibleDuration;  // Initialize the timer with the visible duration
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if (isVisible && timer <= 0f)
+        timer -= Time.deltaTime; // Decrease the timer based on elapsed time
+        if (isVisible && timer <= 0f) // If object is visible and timer expires
         {
-            SetVisible(false);
-            timer = invisibleDuration;
+            SetVisible(false); // Make the object invisible
+            timer = invisibleDuration; // Reset timer to the invisible duration
         }
-        else if (!isVisible && timer <= 0f)
+        else if (!isVisible && timer <= 0f) // If object is invisible and timer expires
         {
-            SetVisible(true);
-            timer = visibleDuration;
+            SetVisible(true); // Make the object visible again
+            timer = visibleDuration; // Reset timer to the visible duration
         }
     }
-
+    
+    // Toggles visibility and collider state
     void SetVisible(bool visible)
     {
-        isVisible = visible;
-        blockRenderer.enabled = visible;
-        blockCollider.enabled = visible;
+        isVisible = visible;  // Update visibility status
+        blockRenderer.enabled = visible; // Enable or disable rendering
+        blockCollider.enabled = visible; // Enable or disable collision detection
     }
 }
